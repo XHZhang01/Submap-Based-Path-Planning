@@ -1,0 +1,114 @@
+%YAML:1.0
+# 'cameras' sequence contains for each camera: T_SC, image_dimension, distortion_coefficients, distortion_type, focal_length and principal_point
+# if this sequence or one of the parameters of an entry is missing the calibration will not be used. Depending on 'useDriver' it will try to 
+# get the calibration directly from the sensor. If useDriver==false it will first try to get the calibration via the visensor calibration service 
+# and then as a last resort the calibration topic is tried. 
+cameras:
+    - {T_SC:
+         [0.99999316, 0.0036546, -0.00057556, 0.0363702,
+          -0.0036534, 0.99999119, 0.00206604, -0.00575547,
+          0.00058311, -0.00206393, 0.9999977, -0.0028041,
+          0.0, 0.0, 0.0, 1.0],
+       image_dimension: [752, 480],
+       distortion_coefficients: [-0.2934237849194451, 0.0839246703518658, -0.0005154189985807679, 0.00022609312624855284],
+       distortion_type: radialtangential,
+       focal_length: [466.68630802262686, 468.3961760331402],
+       principal_point: [375.2933715000355, 243.9791320355918]}
+
+    - {T_SC:
+         [0.99986917, 0.00516082, -0.01532969, -0.07280061,
+          -0.00510959, 0.99998124, 0.00337956, -0.00504339,
+          0.01534685, -0.00330079, 0.99987678, -0.00330441,
+          0.0, 0.0, 0.0, 1.0],
+       image_dimension: [752, 480],
+       distortion_coefficients: [-0.2931189727210833, 0.07758411234564501, -0.0006688190401760994, 0.002667164784385392],
+       distortion_type: radialtangential,
+       focal_length: [466.1619201469648, 467.86446426329337],
+       principal_point: [357.15078518124193, 228.47281108274402]}
+
+camera_params:
+    camera_rate: 20
+    sigma_absolute_translation: 0.0 #1.0e-10
+    sigma_absolute_orientation: 0.0 #1.0e-3
+    sigma_c_relative_translation: 0.0 #1.0e-6 # below 1.0e-6 ruines numerics...
+    sigma_c_relative_orientation: 0.0 #1.0e-6 # below 1.0e-6 ruines numerics...
+    timestamp_tolerance: 0.005 # seconds
+
+
+
+imu:
+    - {imu_topic: imu0}
+
+imu_params:
+    a_max: 176.0 #m/s^2
+    g_max: 7.8 #rad/s
+    sigma_g_c: 12.0e-4 #6.0e-4
+    sigma_a_c: 8.0e-3 #2.0e-3
+    sigma_bg: 0.03
+    sigma_ba: 0.1
+    sigma_gw_c: 3.0e-6 #3.0e-6
+    sigma_aw_c: 2.0e-5 #2.0e-5
+    tau: 3600.0
+    g: 9.81007
+    a0: [ 0.0, -0.0, 0.00 ]
+    #[09:49:28] Joern: accelerometer_noise_density: 1.7e-3, accelerometer_random_walk: 6.3895e-005,
+    imu_rate: 200
+    # tranform Body-Sensor (IMU)
+    T_BS:
+        [1.0000, 0.0000, 0.0000, 0.0000,
+         0.0000, 1.0000, 0.0000, 0.0000,
+         0.0000, 0.0000, 1.0000, 0.0000,
+         0.0000, 0.0000, 0.0000, 1.0000]
+
+
+#gyroscope_noise_density: 0.2e-3, gyroscope_random_walk: 2.8577e-006
+
+# use the IMU at all?
+useImu: true
+
+# VIO window parameters
+numKeyframes: 5
+numImuFrames: 3
+
+# ceres optimization options
+ceres_options:
+    minIterations: 3
+    maxIterations: 10
+    timeLimit: 0.035      # [s] negative values will set the an unlimited time limit
+
+# detection
+detection_options:
+    threshold: 40.0
+    octaves: 0
+    maxNoKeypoints: 400
+
+# delay of images [s]: -8ms with zero-order hold integration at 200 Hz: makes sense.
+imageDelay: 0.0 # -0.0055 without Joern's awesome synchronization, 0 otherwise
+
+# display Images?
+displayImages: true
+
+# use direct driver
+useDriver: false
+
+# save optimization to disk
+saveGraphs: false
+
+# rate at which odometry updates are published
+# only works properly if imu_rate/publish_rate is an integer!!
+#publish_rate: 200
+
+publishing_options:
+    publish_rate: 200
+    publishLandmarks: true
+    landmarkQualityThreshold: 1.0e-5     # landmark with lower quality will not be published
+    maximumLandmarkQuality: 0.05         # landmark with higher quality will be published with the maximum colour intensity
+    maxPathLength: 20                    # maximum length of the published path
+    publishImuPropagatedState: true
+    T_Wc_W:
+        [1.0000, 0.0000, 0.0000, 0.0000,
+         0.0000, 1.0000, 0.0000, 0.0000,
+         0.0000, 0.0000, 1.0000, 0.0000,
+         0.0000, 0.0000, 0.0000, 1.0000]
+    trackedBodyFrame: B                # B or S, the frame of reference that will be expressed relative to the selected worldFrame
+    velocitiesFrame: Wc 

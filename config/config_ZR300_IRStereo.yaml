@@ -1,0 +1,186 @@
+%YAML:1.0
+cameras:
+     # - {T_SC: #realsense ZR300 INFRARED1 camera, RS000
+     #    [ 0.999938337327146, -0.0111305856634545, -0.000788562261715600,   0.0361252831202136,
+     #      0.0111194031869776,  0.999853265144032,   -0.0130965965415701, 0.00272242192024728,
+     #      0.000934211290130000,    0.0130870106977360,  0.999914346928876,   0.000828662693560040,
+     #      0.0,   0.0,   0.0,   1.0],
+     #    image_dimension: [640, 480],
+     #    distortion_coefficients: [0.0,0.0,0.0,0.0],
+     #    distortion_type: radialtangential,
+     #    focal_length: [577.043, 577.043],
+     #    principal_point: [319.5, 239.572],
+     #    # depth_baseline: 0.1, # [m]
+     #    okvis_use: true,
+     #    tracker_use: false
+     #    # timeshift_cam_imu: 29230372 # [ns] time shift from camera to imu, t_imu = t_cam + shift
+     #    }
+
+     # - {T_SC: #realsense ZR300 INFRARED2 camera, RS000
+     #    [ 0.999938337327146, -0.0111305856634545, -0.000788562261715600,   0.106129233098714,
+     #      0.0111194031869776,  0.999853265144032,   -0.0130965965415701, 0.00264409620910628,
+     #      0.000934211290130000,    0.0130870106977360,  0.999914346928876,   0.000620250791901040,
+     #      0.0,   0.0,   0.0,   1.0],
+     #    image_dimension: [640, 480],
+     #    distortion_coefficients: [0.0,0.0,0.0,0.0],
+     #    distortion_type: radialtangential,
+     #    focal_length: [577.043, 577.043],
+     #    principal_point: [319.5, 239.572],
+     #    # depth_baseline: 0.1, # [m]
+     #    okvis_use: true,
+     #    tracker_use: false
+     #    # timeshift_cam_imu: 29230372 # [ns] time shift from camera to imu, t_imu = t_cam + shift
+     #    }
+
+     - {T_SC: #realsense ZR300 INFRARED1 camera, RS005
+        [ 0.999979307460198, 0.00261273389172800, -0.00598146109188000,    0.0362599921796139,
+         -0.00253605139862540,    0.999915313450932,   0.0127931941755200,  0.00186139014582896,
+          0.00601437132183900, -0.0127777065902200, 0.999900755215049,   -2.98992485351400e-05,
+          0.0,   0.0,   0.0,   1.0],
+        image_dimension: [640, 480],
+        distortion_coefficients: [0.0,0.0,0.0,0.0],
+        distortion_type: radialtangential,
+        focal_length: [581.214, 581.214],
+        principal_point: [327.208, 238.371],
+        # depth_baseline: 0.1, # [m]
+        okvis_use: true,
+        tracker_use: false
+        # timeshift_cam_imu: 29230372 # [ns] time shift from camera to imu, t_imu = t_cam + shift
+        }
+
+     - {T_SC: #realsense ZR300 INFRARED2 camera, RS005
+        [ 0.999979307460198, 0.00261273389172800, -0.00598146109188000,    0.105981500916214,
+         -0.00253605139862540,    0.999915313450932,   0.0127931941755200,  0.000855062661028964,
+          0.00601437132183900, -0.0127777065902200, 0.999900755215049,   -0.000173425032561140,
+          0.0,   0.0,   0.0,   1.0],
+        image_dimension: [640, 480],
+        distortion_coefficients: [0.0,0.0,0.0,0.0],
+        distortion_type: radialtangential,
+        focal_length: [581.214, 581.214],
+        principal_point: [327.208, 238.371],
+        # depth_baseline: 0.1, # [m]
+        okvis_use: true,
+        tracker_use: false
+        # timeshift_cam_imu: 29230372 # [ns] time shift from camera to imu, t_imu = t_cam + shift
+        }
+
+     # - {T_SC: #realsense ZR300 RGB camera, RS000
+     #    [ 0.999940962719946,  -0.0106864831765460, -0.00180665763943280,    0.0948882281548758,
+     #      0.0106536729355560,  0.999794006971712,   -0.0172947280365061, 0.00326713485951920,
+     #      0.00199109597924400, 0.0172744525152450,  0.999849522386899,   0.00258706898926720,
+     #      0.0,   0.0,   0.0,   1.0],
+     #    image_dimension: [640, 480],
+     #    distortion_coefficients: [0.1163357217252265, -0.25504629690170094, 0.0006310863330408271, 0.0015763243604386354],
+     #    distortion_type: radialtangential,
+     #    focal_length: [606.0509716312624, 609.2072669938981],
+     #    principal_point: [327.88802413335253, 239.04273996525234],
+     #    okvis_use: true,
+     #    tracker_use: false,
+     #    depth_baseline: 0.1 # [m]
+     #    }
+
+     # - {T_SC: #realsense ZR300 RGB camera, RS005
+     #    [ 0.999884539544178, 0.00409409882030000, -0.0146477382923100, 0.0943282767620011,
+     #     -0.00369631707451800, 0.999626732255850,  0.0270834646358600, 0.00163394321495040,
+     #      0.0147530648748150, -0.0270261965107180, 0.999526250197693,  0.00248721844896243,
+     #      0.0,   0.0,   0.0,   1.0],
+     #    image_dimension: [640, 480],
+     #    distortion_coefficients: [0.09891578753979381, -0.23882684377030003, 0.0018823754669499183, -0.001933138621225407],
+     #    distortion_type: radialtangential,
+     #    focal_length: [610.8599716312624, 610.7812669938981],
+     #    principal_point: [312.56802413335253, 243.25273996525234],
+     #    okvis_use: true,
+     #    tracker_use: false,
+     #    depth_baseline: 0.1 # [m]
+     #    }
+
+     # - {T_SC: #realsense ZR300 fisheye camera, RS000
+     #    [ 0.999995, 0.00114142, 0.00296855, 0.0068474, 
+     #     -0.00111887, 0.999971, -0.00758544, 0.00229775, 
+     #     -0.00297713, 0.00758208, 0.999967, 2.96394e-06, 
+     #      0.0, 0.0, 0.0, 1.0],
+     #    image_dimension: [640, 480],
+     #    distortion_coefficients: [-0.1888787864966167, 0.023097926685091915, 0.00027788963504358317, -0.0004506334457213078],
+     #    distortion_type: radialtangential,
+     #    focal_length: [260.49792014912197, 260.19919866231004],
+     #    principal_point: [324.8593366295983, 238.60789101926744]}
+
+target_size_metres: 0.106
+
+camera_params:
+    camera_rate: 30 # just to manage the expectations of when there should be frames arriving
+    sigma_absolute_translation: 0.0 # The standard deviation of the camera extrinsics translation, e.g. 1.0e-10 for online-calib [m].
+    sigma_absolute_orientation: 0.0 # The standard deviation of the camera extrinsics orientation, e.g. 1.0e-3 for online-calib [rad].
+    sigma_c_relative_translation: 0.0 # The std. dev. of the cam. extr. transl. change between frames, e.g. 1.0e-6 for adaptive online calib (not less for numerics) [m].
+    sigma_c_relative_orientation: 0.0 # The std. dev. of the cam. extr. orient. change between frames, e.g. 1.0e-6 for adaptive online calib (not less for numerics) [rad].
+    timestamp_tolerance: 0.005 # [s] stereo frame out-of-sync tolerance
+    timeshift_cam_imu: 26856921 # [ns] time shift from camera to imu, t_imu = t_cam + shift
+
+imu_params:
+    a_max: 176.0 # acceleration saturation [m/s^2]
+    g_max: 7.8 # gyro saturation [rad/s]
+
+    sigma_g_c: 3.0e-03 # gyro noise density [rad/s/sqrt(Hz)]
+    sigma_a_c: 6.0e-03 # accelerometer noise density [m/s^2/sqrt(Hz)]
+    sigma_bg: 1.0e-01 # gyro bias prior [rad/s]
+    sigma_ba: 1.0e-01 # accelerometer bias prior [m/s^2]
+
+    # sigma_g_c: 1.5369e-04 # gyro noise density [rad/s/sqrt(Hz)]
+    # sigma_a_c: 9.7939e-04 # accelerometer noise density [m/s^2/sqrt(Hz)]
+    # sigma_bg: 5.0e-07 # gyro bias prior [rad/s]
+    # sigma_ba: 1.0e-04 # accelerometer bias prior [m/s^2]
+
+    sigma_gw_c: 8.0e-6 # gyro drift noise density [rad/s^s/sqrt(Hz)]
+    sigma_aw_c: 8.0e-5 # accelerometer drift noise density [m/s^2/sqrt(Hz)]
+    tau: 3600.0 # reversion time constant, currently not in use [s]
+    g: 9.81007 # Earth's acceleration due to gravity [m/s^2]
+    a0: [ 0.0000, 0.0000, 0.0000 ] # Accelerometer bias [m/s^2]
+    imu_rate: 200
+    # tranform Body-Sensor (IMU)
+    T_BS: [-0.001144, 0.289826, 0.957078, 0.095547,
+      0.999939, -0.010168, 0.004274, -0.064905,
+      0.010970, 0.957025, -0.289797, -0.090292,
+      0.0, 0.0, 0.0, 1.0]
+
+# Estimator parameters
+numKeyframes: 5 # number of keyframes in optimisation window
+numImuFrames: 3 # number of frames linked by most recent nonlinear IMU error terms
+
+# ceres optimization options
+ceres_options:
+    minIterations: 3   # minimum number of iterations always performed
+    maxIterations: 10  # never do more than these, even if not converged
+    timeLimit: 0.035   # [s] negative values will set the an unlimited time limit
+
+# detection
+detection_options:
+    threshold: 40.0      # detection threshold. By default the uniformity radius in pixels
+    octaves: 0           # number of octaves for detection. 0 means single-scale at highest resolution
+    maxNoKeypoints: 400  # restrict to a maximum of this many keypoints per image (strongest ones)
+
+# delay of images [s]:
+imageDelay: 0.0  # in case you are using a custom setup, you will have to calibrate this. 0 for the VISensor.
+
+# display debug images?
+displayImages: true  # displays debug video and keyframe matches. May be slow.
+
+# use direct driver
+useDriver: true 
+
+# some options for how and what to publish -- optional in ROS-free version
+publishing_options:
+    publish_rate: 20                  # rate at which odometry updates are published only works properly if imu_rate/publish_rate is an integer!!
+    publishLandmarks: true             # select, if you want to publish landmarks at all
+    landmarkQualityThreshold: 1.0e-2   # landmark with lower quality will not be published
+    maximumLandmarkQuality: 0.05       # landmark with higher quality will be published with the maximum colour intensity
+    maxPathLength: 20                  # maximum length of the published path
+    publishImuPropagatedState: true    # Should the state that is propagated with IMU messages be published? Or just the optimized ones?
+    # provide custom World frame Wc
+    T_Wc_W:
+        [0.0000,-1.0000, 0.0000, 0.0000,
+         1.0000, 0.0000, 0.0000, 0.0000,
+         0.0000, 0.0000, 1.0000, 0.0000,
+         0.0000, 0.0000, 0.0000, 1.0000]
+    trackedBodyFrame: B                # B or S, the frame of reference that will be expressed relative to the selected worldFrame
+    velocitiesFrame: Wc                # Wc, B or S,  the frames in which the velocities of the selected trackedBodyFrame will be expressed in
+

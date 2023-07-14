@@ -1,0 +1,82 @@
+%YAML:1.2
+# SPDX-FileCopyrightText: 2021 Smart Robotics Lab, Imperial College London, Technical University of Munich
+# SPDX-License-Identifier: CC0-1.0
+
+map:
+    dim:                        [32., 32., 32.]
+    res:                        0.03
+    free_space_res:             0.06 # free space resolution
+
+data:
+    # tsdf
+    truncation_boundary_factor: 8
+    max_weight:                 100
+
+    # occupancy
+    surface_boundary:           0
+    min_occupancy:              -100
+    max_occupancy:               100
+    log_odd_min:                -5.015
+    log_odd_max:                 5.015
+    fs_integr_scale:            1
+    const_surface_thickness:    false
+    uncertainty_model:          linear
+    tau_min_factor:             3
+    tau_max_factor:             12
+    k_tau:                      0.05
+    sigma_min_factor:           1         # minimum/maximum uncertainty := 3 x sigma_min_factor/sigma_max_factor * voxel_dim
+    sigma_max_factor:           3         # minimum/maximum uncertainty := 3 x sigma_min_factor/sigma_max_factor * voxel_dim
+    k_sigma:                    0.05
+
+    # lidar ray integration
+    k_scale:                    6e-03
+
+sensor:
+    width:                      360
+    height:                     180
+    elevation_angles:           []
+    azimuth_angles:             []
+    near_plane:                 0.8
+    far_plane:                  30.0
+    # T_BS:                       [0.004088675978291, 0.003617778170131, 0.999985097093880, 0.154175877654483, -0.788916081238428, -0.614476792035727, 0.005448744156649, -0.000462884781525, 0.614487346893446, -0.788926602245478, 0.000341726877956, -0.028905072502590, 0.0000, 0.0000, 0.0000, 1.0000] # Body - to - sensor (LiDAR) for only mapping flight 02
+    # T_BS:                       [-0.0058, 0.0020, 1.0000, 0.1524, 0.3955, -0.9184, 0.0042, 0.0004, 0.9184, 0.3955, 0.0045, -0.0250, 0., 0., 0., 1.0000] # outdoor flight
+    T_BS: [ 0.000296978849837, -0.011967912578783, 0.999928337868304, 0.153370909285713, 0.041823694652730, 0.999053599677944, 0.011945021395426, -0.001288048210477, -0.999124962339125, 0.041817150058900, 0.000797240110283, -0.026316949801306, 0.0, 0.0, 0.0, 1.0 ]  # TUM offices dataset Lidar to body
+    elevation_resolution_angle: 0.086 # only used for ray-based integration [degree]
+    azimuth_resolution_angle:   0.002 # only used for ray-based integration [degree]
+
+tracker:
+    iterations:                 [10, 5, 4]
+    dist_threshold:             0.1
+    normal_threshold:           0.8
+    track_threshold:            0.15
+    icp_threshold:              0.00001
+
+reader:
+    reader_type:                "leica"
+    sequence_path:              ""
+    ground_truth_file:          ""
+    fps:                        0.0
+    drop_frames:                false
+    verbose:                    0
+    # following parameters are only used for Leica BLK LiDAR sensor
+    leica_reader_type:          "ray" # "ray" | "rangeImage"
+    T_BS: [ 0.000296978849837, -0.011967912578783, 0.999928337868304, 0.153370909285713, 0.041823694652730, 0.999053599677944, 0.011945021395426, -0.001288048210477, -0.999124962339125, 0.041817150058900, 0.000797240110283, -0.026316949801306, 0.0, 0.0, 0.0, 1.0 ]  # TUM offices dataset Lidar to body
+    scan_time_interval:         0.2 # only for "rangeImage; size of interval that lidar measurements are clustered together
+    use_motion_comp:            true
+    width:                      360 # only for "rangeImage; should match sensor.width
+    height:                     180 # only for "rangeImage; should match sensor.height
+
+app:
+    enable_ground_truth:        true
+    enable_rendering:           true
+    enable_gui:                 true
+    mesh_path:                  ""
+    slice_path:                 ""
+    structure_path:             ""
+    sensor_downsampling_factor: 1
+    tracking_rate:              1
+    integration_rate:           1
+    rendering_rate:             1
+    meshing_rate:               500000
+    max_frames:                 -1
+    log_file:                   "log.csv"

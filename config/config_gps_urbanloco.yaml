@@ -1,0 +1,91 @@
+%YAML:1.0
+cameras:
+     - {T_SC:
+        [-0.999905181550327, -0.012990043852130, -0.004570193598479, -0.024227446820328,
+          0.004732473143288, -0.012489446573635, -0.999910804733218, -0.184995633888032,
+          0.012931806012924, -0.999837623059367, 0.012549737377334, -0.412094701594093,
+                       0.0,                0.0,               0.0,   1.000000000000000],
+        image_dimension: [512,384],
+        distortion_coefficients: [-3.0451652061637519e-01, 3.8894492749157322e-02, 1.0517466490567872e-03, -5.5095449411338973e-04, 1.7054732639063463e-01 ],
+        distortion_type: equidistant,
+        focal_length: [464.368819940400, 217.303897744044],
+        principal_point: [259.923164702761, 184.834056574854]}
+
+     - {T_SC:
+        [-0.507397081005533, -0.023807889059556, -0.861383414401271, -0.215321099257550,
+          0.861577166328024,  0.003690304150495, -0.507613207193676, -0.124258361502015,
+          0.015263965711365, -0.999709740911733,  0.018639884038200, -0.293023243938976,
+                        0.0,                0.0,                0.0,  1.000000000000000],
+        image_dimension: [512,384],
+        distortion_coefficients: [-3.3667553856802590e-01, 2.2370191478408946e-01, 6.9364654936351162e-04, 6.5891956666038094e-04, -1.4386286982166674e-01],
+        distortion_type: equidistant,
+        focal_length: [453.688189042500, 204.693035387500],
+        principal_point: [251.640096262500, 172.445230487500]}
+
+# additional camera parameters
+camera_parameters:
+    timestamp_tolerance: 0.005 # [s] stereo frame out-of-sync tolerance
+    image_delay: 0.0 # [s] timestamp_camera_correct = timestamp_camera - image_delay -0.00780146
+    online_calibration: # some parameters to set the online 
+        do_extrinsics: false # Do we online-calibrate extrinsics?
+        sigma_r: 0.001 # T_SCi position prior stdev [m] 
+        sigma_alpha: 0.01 # T_SCi orientation prior stdev [rad]
+
+# the IMU sensor model
+# sensor specifications: https://www.xsens.com/hubfs/Downloads/Manuals/MTi-1-series-datasheet.pdf
+imu_parameters:
+    used: true # enable IMU
+    a_max: 160.0 # acceleration saturation [m/s^2]
+    g_max: 10.0 # gyro saturation [rad/s]
+    sigma_g_c: 0.278 # gyro noise density [rad/s/sqrt(Hz)]
+    sigma_bg: 0.03 # gyro bias prior [rad/s]
+    sigma_a_c: 0.4 # accelerometer noise density [m/s^2/sqrt(Hz)]
+    sigma_ba: 0.01 # accelerometer bias prior [m/s^2]
+    sigma_gw_c: 0.0008 # gyro drift noise density [rad/s^s/sqrt(Hz)]
+    sigma_aw_c: 0.04 # 0.04 accelerometer drift noise density [m/s^2/sqrt(Hz)]
+    a0: [0.237891675418656,  0.167477259386443,   0.242558311983621] #[-0.0691081, 0.0215465, 0.315693] # [ -0.1, 0.1, 0.4 ] Initial accelerometer bias [m/s^2]
+    g0: [0.0, 0.0, 0.0] #[-0.00152201, -0.00139254, -0.000370433] # Initial gyro bias [rad/s]
+    g: 9.81007 # Earth's acceleration due to gravity [m/s^2]
+    T_BS: 
+        [ 1.0, 0.0, 0.0, 0.0,
+          0.0, 1.0, 0.0, 0.0,
+          0.0, 0.0, 1.0, 0.0,
+          0.0, 0.0, 0.0, 1.0 ]
+
+# frontend: detection etc. 
+frontend_parameters:
+    detection_threshold: 40.0 # detection threshold. By default the uniformity radius in pixels
+    absolute_threshold: 4.0 # absolute Harris corner threshold (noise floor)
+    matching_threshold: 55.0 # BRISK descriptor matching threshold
+    octaves: 0 # number of octaves for detection. 0 means single-scale at highest resolution
+    max_num_keypoints: 800 # restrict to a maximum of this many keypoints per image (strongest ones)
+    keyframe_overlap: 0.65 # minimum field-of-view overlap
+    use_cnn: true # use the CNN (if available) to filter out dynamic content / sky
+    
+# estimator parameters
+estimator_parameters:
+    num_keyframes: 5 # number of keyframes in optimisation window
+    num_loop_closure_frames: 5 # number of loop closure frames in optimisation window
+    num_imu_frames: 3 # number of frames linked by most recent nonlinear IMU error terms
+    do_loop_closures: false # whether to do VI-SLAM or VIO
+    do_final_ba: false # Whether to run a full final BA
+    enforce_realtime: false # whether to limit the time budget for optimisation 
+    realtime_min_iterations: 100 # minimum number of iterations always performed
+    realtime_max_iterations: 100 # never do more than these, even if not converged
+    realtime_time_limit: 0.035 # time budget for realtime optimisation [s]
+    realtime_num_threads: 2 # number of threads for the realtime optimisation
+    full_graph_iterations: 50 # don't do more than these for the full (background) optimisation
+    full_graph_num_threads: 1 # number of threads for the full (background) optimisation
+
+
+# some options for how and what to output
+output_parameters:
+    display_matches: true  # displays debug video and matches. May be slow.
+    display_overhead: false # debug overhead image. Is slow.
+    publish_imu_propagated_state: false # Should the state that is propagated with IMU messages be published or just the optimised ones?
+
+# some options for gps mode
+gps_parameters:
+    use_gps: false # is gps available
+    observability_threshold: 0.0 # threshold when GPS extrinsics are assumed to become observable
+    r_SA: [ -0.508 , 0.4318 , 0.5842 ] # antenna position relative to (IMU) sensor frame 

@@ -1,0 +1,91 @@
+%YAML:1.0
+cameras:
+     - {T_SC:
+        #[ -0.02822879, 0.01440125, 0.99949774, 0.00110212,
+        #  -0.99960149, -0.00041887, -0.02822568, 0.02170142,
+        #   0.00001218, -0.99989621, 0.01440734, -0.00005928,
+        #   0.0, 0.0, 0.0, 1.0],
+        [    -0.021879, -0.002460,  0.999758,  0.000832,
+             -0.999749, -0.004768, -0.021891,  0.020346,
+              0.004821, -0.999986, -0.002355, -0.002088,
+                   0.0,       0.0,       0.0,       1.0],
+        image_dimension: [640, 480],
+        distortion_coefficients: [-0.017283, 0.030178, -0.023026, 0.006517],
+        distortion_type: equidistant,
+        focal_length: [276.576833, 276.300827],
+        principal_point: [319.997353, 241.683900]}
+
+     - {T_SC:
+        #[ -0.010949829031350,   0.012457338339090,   0.999862564825040,  -0.000219312256320,
+        #  -0.999880498069590,   0.010759459360430,  -0.011084172631920,  -0.058156104625940,
+        #  -0.010895996596240,  -0.999864883845700,   0.012338199014170,  -0.000285883429070,
+        #   0.000000000000000,   0.000000000000000,   0.000000000000000,   1.000000000000000],
+        [    -0.008001, -0.004957,  0.999956, -0.000602,
+             -0.999947,  0.006442, -0.007969, -0.059035,
+             -0.006402, -0.999967, -0.005008, -0.001639,
+                   0.0,       0.0,       0.0,       1.0],
+        image_dimension: [640, 480],
+        distortion_coefficients: [-0.012925, 0.016666, -0.011664, 0.003368],
+        distortion_type: equidistant,
+        focal_length: [275.974502, 275.675503],
+        principal_point: [315.181839, 235.503377]}
+
+
+# additional camera parameters
+camera_parameters:
+    timestamp_tolerance: 0.005 # [s] stereo frame out-of-sync tolerance
+    image_delay: 0.0165914312471 # [s] timestamp_camera_correct = timestamp_camera - image_delay
+    online_calibration: # some parameters to set the online 
+        do_extrinsics: false # Do we online-calibrate extrinsics?
+        sigma_r: 0.001 # T_SCi position prior stdev [m] 
+        sigma_alpha: 0.01 # T_SCi orientation prior stdev [rad]
+
+imu_parameters:
+    use: true
+    a_max: 176.0 # acceleration saturation [m/s^2]
+    g_max: 7.8 # gyro saturation [rad/s]
+    sigma_g_c: 0.01 # 0.01 gyro noise density [rad/s/sqrt(Hz)]
+    sigma_a_c: 0.4 # 0.2 accelerometer noise density [m/s^2/sqrt(Hz)]
+    sigma_bg: 0.01 # gyro bias prior [rad/s]
+    sigma_ba: 0.02 # 0.01 accelerometer bias prior [m/s^2]
+    sigma_gw_c: 0.00004 # 4.0e-6 # gyro drift noise density [rad/s^s/sqrt(Hz)]
+    sigma_aw_c: 0.002 # 4.0e-5 # accelerometer drift noise density [m/s^2/sqrt(Hz)]
+    g: 9.81007 # Earth's acceleration due to gravity [m/s^2]
+    g0: [ -0.0043, -0.0052, 0.0005 ] # initial gyro bias [rad/s]
+    a0: [ 0.05, -0.05, 0.16 ] # initial accelerometer bias [m/s^2]
+    # tranform Body-Sensor (IMU)
+    T_BS:
+        [1.0000, 0.0000, 0.0000, 0.0000,
+         0.0000, 1.0000, 0.0000, 0.0000,
+         0.0000, 0.0000, 1.0000, 0.0000,
+         0.0000, 0.0000, 0.0000, 1.0000]
+
+# frontend: detection etc. 
+frontend_parameters:
+    detection_threshold: 30.0 # detection threshold. By default the uniformity radius in pixels
+    absolute_threshold: 200.0 # absolute Harris corner threshold (noise floor)
+    matching_threshold: 70.0 # BRISK descriptor matching threshold
+    octaves: 0 # number of octaves for detection. 0 means single-scale at highest resolution
+    max_num_keypoints: 400 # restrict to a maximum of this many keypoints per image (strongest ones)
+    keyframe_overlap: 0.55 # minimum field-of-view overlap
+
+# estimator parameters
+estimator_parameters:
+    num_keyframes: 5 # number of keyframes in optimisation window
+    num_loop_closure_frames: 3 # number of loop closure frames in optimisation window
+    num_imu_frames: 3 # number of frames linked by most recent nonlinear IMU error terms
+    do_loop_closures: true # whether to do VI-SLAM or VIO
+    do_final_ba: false # Whether to run a full final BA
+    enforce_realtime: false # whether to limit the time budget for optimisation 
+    realtime_min_iterations: 3 # minimum number of iterations always performed
+    realtime_max_iterations: 10 # never do more than these, even if not converged
+    realtime_time_limit: 0.035 # time budget for realtime optimisation [s]
+    realtime_num_threads: 1 # number of threads for the realtime optimisation
+    full_graph_iterations: 15 # don't do more than these for the full (background) optimisation
+    full_graph_num_threads: 1 # number of threads for the full (background) optimisation
+
+# some options for how and what to output
+output_parameters:
+    display_images: true  # displays debug video and keyframe matches. May be slow.
+    publish_imu_propagated_state: false # Should the state that is propagated with IMU messages be published or just the optimised ones?
+

@@ -1,0 +1,114 @@
+%YAML:1.0
+cameras:
+  # left
+  - {T_SC:
+       [ 0.99999395, -0.00301404, -0.00173641, -0.00583189,
+         0.00301154,  0.99999443, -0.00144116, -0.01742036,
+         0.00174074,  0.00143592,  0.99999745,  0.01592047,
+         0.        ,  0.        ,  0.        ,  1. ],
+     image_dimension: [848, 480],
+     distortion_coefficients: [0.007017508922248575, -0.002598448110748391, -0.0014755213248257705, 0.0006640775125219394],
+     distortion_type: radialtangential,
+     focal_length: [ 431.3873911369959, 430.2496176152663 ],
+     principal_point: [ 427.4407802012019, 238.52694867508183 ],
+     cam_model: pinhole}
+  # right
+  - {T_SC:
+       [ 0.99998986, -0.0030345,  -0.00332727,  0.04421182,
+         0.00302971,  0.99999437, -0.00144238, -0.01728303,
+         0.00333163,  0.00143229,  0.99999342,  0.01592412,
+         0.        ,  0.        ,  0.        ,  1. ],
+     image_dimension: [848, 480],
+     distortion_coefficients: [ 0.007925673974579087, -0.0036215088874331737, -0.001422629239660213, 0.0002909310193082525 ],
+     distortion_type: radialtangential,
+     focal_length: [ 431.4435041724946, 430.32814097594184 ],
+     principal_point: [ 427.28683910723333, 238.38215822538055 ],
+     cam_model: pinhole}
+
+
+# additional camera parameters
+camera_parameters:
+  timestamp_tolerance: 0.005 # [s] stereo frame out-of-sync tolerance
+  image_delay: -0.012 #-0.0137937863804 # [s] timestamp_camera_correct = timestamp_camera - image_delay
+  online_calibration: # some parameters to set the online
+    do_extrinsics: false # Do we online-calibrate extrinsics?
+    sigma_r: 0.001 # T_SCi position prior stdev [m]
+    sigma_alpha: 0.005 # T_SCi orientation prior stdev [rad]
+
+imu_parameters:
+  used: true # enable IMU
+  a_max: 160.0 # acceleration saturation [m/s^2]
+  g_max: 10.0 # gyro saturation [rad/s]
+  sigma_g_c: 0.00278 # gyro noise density [rad/s/sqrt(Hz)]
+  sigma_bg: 0.03 # gyro bias prior [rad/s]
+  sigma_a_c: 0.0252 # accelerometer noise density [m/s^2/sqrt(Hz)]
+  sigma_ba: 0.01 # accelerometer bias prior [m/s^2]
+  sigma_gw_c: 0.0008 # gyro drift noise density [rad/s^s/sqrt(Hz)]
+  sigma_aw_c: 0.04 # accelerometer drift noise density [m/s^2/sqrt(Hz)]
+  a0: [ 0.063, 0.044, 0.176 ] # Initial accelerometer bias [m/s^2]
+  g0: [ -0.0028, 0.0045, 0.0006 ] # Initial gyro bias [rad/s]
+  g: 9.81007 # Earth's acceleration due to gravity [m/s^2]
+  s_a: [ 1.0, 1.0, 1.0 ] # scale factor for accelerometer measurements: a_true = s_a * a_meas + b_a
+  # tranform Body-Sensor (IMU)
+  T_BS:
+    [1.0000, 0.0000, 0.0000, 0.0000,
+     0.0000, 1.0000, 0.0000, 0.0000,
+     0.0000, 0.0000, 1.0000, 0.0000,
+     0.0000, 0.0000, 0.0000, 1.0000]
+
+# frontend: detection etc.
+frontend_parameters:
+  detection_threshold: 36.0 #42.0 # detection threshold. By default the uniformity radius in pixels
+  absolute_threshold: 20.0 # absolute Harris corner threshold (noise floor)
+  matching_threshold: 60.0 # BRISK descriptor matching threshold
+  octaves: 0 # number of octaves for detection. 0 means single-scale at highest resolution
+  max_num_keypoints: 1200 # restrict to a maximum of this many keypoints per image (strongest ones)
+  keyframe_overlap: 0.55 # minimum field-of-view overlap
+  use_cnn: false # use the CNN (if available) to filter out dynamic content / sky
+  parallelise_detection: true # Run parallel detect & describe.
+  num_matching_threads: 4 # Parallelise matching with this number of threads.
+
+# estimator parameters
+estimator_parameters:
+  num_keyframes: 10 # number of keyframes in optimisation window
+  num_loop_closure_frames: 5 # number of loop closure frames in optimisation window
+  num_imu_frames: 3 # number of frames linked by most recent nonlinear IMU error terms
+  do_loop_closures: true # whether to do VI-SLAM or VIO
+  do_final_ba: true # Whether to run a full final BA
+  enforce_realtime: false # whether to limit the time budget for optimisation
+  realtime_min_iterations: 3 # minimum number of iterations always performed
+  realtime_max_iterations: 10 # never do more than these, even if not converged
+  realtime_time_limit: 0.035 # time budget for realtime optimisation [s]
+  realtime_num_threads: 2 # number of threads for the realtime optimisation
+  full_graph_iterations: 50 # don't do more than these for the full (background) optimisation
+  full_graph_num_threads: 2 # number of threads for the full (background) optimisation
+
+# some options for how and what to output
+output_parameters:
+  display_matches: true  # displays debug video and matches. May be slow.
+  display_overhead: false # debug overhead image. Is slow.
+  publish_imu_propagated_state: false # Should the state that is propagated with IMU messages be published or just the optimised ones?
+  imu_propagated_state_publishing_rate: 40.0 # Limit propagated state publishing rate
+
+# some options for gps mode
+gps_parameters:
+  use_gps: false # is gps available
+  data_type: "cartesian" # "cartesian" | "geodetic" | "geodetic-leica": format of GPS data
+  observability_threshold: 10.0 # threshold when GPS extrinsics are assumed to become observable
+  variance_threshold: 50.0 # threshold for the max() operation on the chi square error
+  r_SA: [ -0.0058 , -0.0174 , 0.0159 ] # antenna position relative to (IMU) sensor frame
+  yaw_error_threshold: 0.2 # threshold for initialization (in degrees)
+  gps_fusion_mode: 4 # 1: do svd initialization only once | 2: do SVD initialisation in every step | 3: do position alignment only | 4: do position + full alignment
+
+# LiDAR Mapping Backend
+mapping_parameters:
+  use: false # should LiDAR mapping backend be switched on
+  integration_type: "rangeImage" # "ray" | "rangeImage"
+  sensor_type: "ouster"  # "ouster" | "leica" ToDo: Unify with external script
+  config_file: "/home/boche/projects/okvis2-leica/config/config_newercollege_mapping.yaml" # path to supereight config file
+  results_directory: "/home/boche/Documents/Datasets/NewerCollege/LeicaFormat/last/meshes/range_image_based/"
+  # Range Image Stuff ToDo: UNify with external mappin config
+  scan_time_interval: 0.2 # only for "rangeImage; size of interval that lidar measurements are clustered together
+  use_motion_comp: true
+  width: 360 # only for "rangeImage; should match sensor.width
+  height: 180 # only for "rangeImage; should match sensor.height

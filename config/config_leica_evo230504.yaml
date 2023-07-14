@@ -1,0 +1,135 @@
+%YAML:1.0
+cameras:
+# bottom
+  - {T_SC:
+       [ -0.999960244173504,   0.000547035884138,   0.008900046303684,   0.0,
+          0.000443612999033,   0.999932406692553,  -0.011618315434950,   0.0,
+         -0.008905800355574,  -0.011613905362985,  -0.999892896225514,   0.0,
+          0.0,                 0.0,                 0.0,                 1.000000000000000],
+     image_dimension: [640, 480],
+     focal_length: [ 318.34465412544296, 318.20528420043786],
+     principal_point: [317.06524050923974, 240.49911844561967],
+     eucm_parameters: [0.7446662641709269, 0.9861838316292361],
+     cam_model: eucm}
+# front
+  - {T_SC:
+       [  0.017220562161989,  -0.004918488539699,  -0.999839617493381,  -0.167833846660692,
+         -0.999840832460111,   0.004580898819821,  -0.017243117800276,   0.154439245335828,
+          0.004664974201075,   0.999977411663127,  -0.004838820023093,  -0.020687926797416,
+          0.0,                 0.0,                 0.0,                 1.000000000000000],
+     image_dimension: [640, 480],
+     focal_length: [317.85774573944843, 317.81284445189004],
+     principal_point: [315.8014365795449, 239.0376174979407],
+     eucm_parameters: [0.7442688573290529, 0.9881216365349701],
+     cam_model: eucm}
+  # left
+  - {T_SC:
+       [  0.033239477199515,  -0.997170669542496,  -0.067422495946640,  -0.046445692020371,
+          0.007129000445609,   0.067694612143008,  -0.997680618654815,  -0.278077633500414,
+          0.999421990206414,   0.032681727172527,   0.009358963664375,  -0.021126486682791,
+          0.0,                 0.0,                 0.0,                 1.000000000000000],
+     image_dimension: [640, 480],
+     focal_length: [317.78627943245505, 317.70138100992824],
+     principal_point: [317.9342982014833, 239.11239050279306],
+     eucm_parameters: [0.7450483696700815, 0.9863798857628273],
+     cam_model: eucm}
+  # right
+  - {T_SC:
+       [ -0.001822853720012,   0.995111191966121,  -0.098744077432942,  -0.055129989291966,
+          0.013602738391463,   0.098759780150635,   0.995018327134155,   0.275802337872063,
+          0.999905816921059,   0.000470583006070,  -0.013716261847368,  -0.028713336709132,
+          0.0,                 0.0,                 0.0,                 1.000000000000000],
+     image_dimension: [640, 480],
+     focal_length: [319.02443225581044, 319.02016009740106],
+     principal_point: [315.4686203894315, 241.41967600340865],
+     eucm_parameters: [0.7462454922938324, 0.9870873007436347],
+     cam_model: eucm}
+  # top
+  #- {T_SC:
+  #     [ -0.999974516681071,  -0.007129313095989,  -0.000372670415132,  -0.000308906843390,
+  #        0.007122931925320,  -0.999862445721983,   0.014978433684562,   0.000529298753074,
+  #       -0.000479405096147,   0.014975397478361,   0.999887747520250,   0.038995184566714,
+  #        0.0,                 0.0,                 0.0,                 1.000000000000000],
+  #   image_dimension: [640, 480],
+  #   focal_length: [318.18552728929717, 318.11374092953747],
+  #   principal_point: [318.5328303975112, 240.17431284990465],
+  #   eucm_parameters: [0.745097487016267, 0.9874405587428025],
+  #   cam_model: eucm}
+
+
+# additional camera parameters
+camera_parameters:
+  timestamp_tolerance: 0.005 # [s] stereo frame out-of-sync tolerance
+  image_delay: 0.00 # [s] timestamp_camera_correct = timestamp_camera - image_delay
+  online_calibration: # some parameters to set the online
+    do_extrinsics: false # Do we online-calibrate extrinsics?
+    sigma_r: 0.001 # T_SCi position prior stdev [m]
+    sigma_alpha: 0.005 # T_SCi orientation prior stdev [rad]
+
+imu_parameters:
+  use: true
+  a_max: 176.0 # acceleration saturation [m/s^2]
+  g_max: 7.8 # gyro saturation [rad/s]
+  sigma_g_c: 2.332e-04 # gyro noise density [rad/s/sqrt(Hz)]
+  sigma_bg: 0.01 # gyro bias prior [rad/s]
+  sigma_a_c: 1.825e-03 # accelerometer noise density [m/s^2/sqrt(Hz)]
+  sigma_ba: 0.1 # accelerometer bias prior [m/s^2]
+  #sigma_gw_c: 9.752e-06 # gyro drift noise density [rad/s^s/sqrt(Hz)] -> random walk
+  #sigma_aw_c: 2.940e-04 # 0.04 accelerometer drift noise density [m/s^2/sqrt(Hz)] -> random walk
+  sigma_gw_c: 9.752e-01 # gyro drift noise density [rad/s^s/sqrt(Hz)] -> random walk
+  sigma_aw_c: 2.940e-00 # 0.04 accelerometer drift noise density [m/s^2/sqrt(Hz)] -> random walk
+  g: 9.81007 # Earth's acceleration due to gravity [m/s^2]
+  g0: [ -0.004772530402988195,  -0.0011638369178399444, 0.00859162025153637 ] # initial gyro bias [rad/s]
+  a0: [ -0.07202266156673431, -0.15966060757637024, 0.1248450055718422 ] # initial accelerometer bias [m/s^2]
+  s_a: [ 1.065454125404358,  1.064724326133728, 1.0484893321990967 ] # scale factor for accelerometer measurements: a_true = s_a * a_meas + b_a
+  # tranform Body-Sensor (IMU)
+  T_BS:
+        [ -0.999845756814533, 0.015782162585901,   0.007706226319386,   0.081650000000000,
+        -0.015675626844035,  -0.999783341827576,   0.013694675137801,  -0.002390000000000,
+         0.007920688292061,   0.013571762899325,   0.999876527351645,   0.007000000000000,
+         0.0,                 0.0,                 0.0,                 1.000000000000000]
+
+# frontend: detection etc.
+frontend_parameters:
+  detection_threshold: 36.0 #42.0 # detection threshold. By default the uniformity radius in pixels
+  absolute_threshold: 150.0 # absolute Harris corner threshold (noise floor)
+  matching_threshold: 60.0 # BRISK descriptor matching threshold
+  octaves: 0 # number of octaves for detection. 0 means single-scale at highest resolution
+  max_num_keypoints: 200 # restrict to a maximum of this many keypoints per image (strongest ones)
+  keyframe_overlap: 0.55 # minimum field-of-view overlap
+  use_cnn: false # use the CNN (if available) to filter out dynamic content / sky
+  parallelise_detection: true # Run parallel detect & describe.
+  num_matching_threads: 4 # Parallelise matching with this number of threads.
+
+# estimator parameters
+estimator_parameters:
+  num_keyframes: 10 # number of keyframes in optimisation window
+  num_loop_closure_frames: 5 # number of loop closure frames in optimisation window
+  num_imu_frames: 3 # number of frames linked by most recent nonlinear IMU error terms
+  do_loop_closures: false # whether to do VI-SLAM or VIO
+  do_final_ba: true # Whether to run a full final BA
+  enforce_realtime: false # whether to limit the time budget for optimisation
+  realtime_min_iterations: 3 # minimum number of iterations always performed
+  realtime_max_iterations: 10 # never do more than these, even if not converged
+  realtime_time_limit: 0.035 # time budget for realtime optimisation [s]
+  realtime_num_threads: 2 # number of threads for the realtime optimisation
+  full_graph_iterations: 15 # don't do more than these for the full (background) optimisation
+  full_graph_num_threads: 2 # number of threads for the full (background) optimisation
+
+# some options for how and what to output
+output_parameters:
+  display_matches: true  # displays debug video and matches. May be slow.
+  display_overhead: false # debug overhead image. Is slow.
+  publish_imu_propagated_state: false # Should the state that is propagated with IMU messages be published or just the optimised ones?
+  imu_propagated_state_publishing_rate: 40.0 # Limit propagated state publishing rate
+  enable_submapping: true # enable submapping
+
+# some options for gps mode
+gps_parameters:
+  use_gps: false # is gps available
+  data_type: "geodetic-leica" # "cartesian" | "geodetic" | "geodetic-leica": format of GPS data
+  observability_threshold: 10.0 # threshold when GPS extrinsics are assumed to become observable
+  variance_threshold: 50.0 # threshold for the max() operation on the chi square error
+  r_SA: [ 0.029328659441660,   0.004449406850489,   0.042257134474949 ] # antenna position relative to (IMU) sensor frame
+  yaw_error_threshold: 0.1 # threshold for initialization (in degrees)
+  gps_fusion_mode: 4 # 1: do svd initialization only once | 2: do SVD initialisation in every step | 3: do position alignment only | 4: do position + full alignment

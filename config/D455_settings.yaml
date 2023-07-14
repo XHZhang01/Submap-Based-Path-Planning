@@ -1,0 +1,10 @@
+%YAML:1.0
+global_time: true
+enable_rgb: true
+ir_autoexposure: false
+ir_exposure: 4500.0 
+rgb_autoexposure: false 
+rgb_auto_wb: false       
+rgb_exposure: 90.0     
+rgb_wb: 4500.0           # RGB white balance in Kelvins[?]
+laser_power: 360.0       # Laser power in [0, 360] range.

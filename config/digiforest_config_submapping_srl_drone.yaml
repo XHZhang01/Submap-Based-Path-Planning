@@ -1,0 +1,60 @@
+%YAML:1.2
+# SPDX-FileCopyrightText: 2021 Smart Robotics Lab, Imperial College London, Technical University of Munich
+# SPDX-License-Identifier: CC0-1.0
+
+general:
+  sensor_type:                "depth" # depth | ouster [not yet supported] | leica
+  results_directory:         "/home/boche/srl_mav_sim_ws"
+  #results_directory:          "/srv/Users/Boche/Documents/Datasets/Digiforest"
+  integration_type:           "ray"  # ray | rangeImage; option not yet supported, not used if sensor_type depth
+  submap_time_threshold:      15.0  # taken from Tommaso
+  submap_state_buffer:        1 #Buffer, if in 10 states we have notcreated a submap we start integrating it into supereight
+  submap_kf_threshold:        3
+  sensor_measurement_downsampling: 1
+  depth_image_resolution_downsampling: 2
+
+map:
+  dim:                        [12.8, 12.8, 12.8] # [15., 15., 15.] # [100., 140., 50.]
+  res:                        0.1
+  free_space_res:             0.1 # free space resolution
+
+data:
+  # tsdf
+  truncation_boundary_factor: 8
+  max_weight:                 100
+
+  # occupancy
+  surface_boundary:           0
+  min_occupancy:              -100
+  max_occupancy:               100
+  log_odd_min:                -5.015
+  log_odd_max:                 5.015
+  fs_integr_scale:            1
+  const_surface_thickness:    false
+  uncertainty_model:          quadratic
+  tau_min_factor:             3
+  tau_max_factor:             12
+  k_tau:                      0.02
+  sigma_min_factor:           1         # minimum/maximum uncertainty := 3 x sigma_min_factor/sigma_max_factor * voxel_dim
+  sigma_max_factor:           3         # minimum/maximum uncertainty := 3 x sigma_min_factor/sigma_max_factor * voxel_dim
+  k_sigma:                    0.05
+
+sensor:
+  scale:                      0.001
+  # Realsense on SRL Drone
+  width:                      640
+  height:                     480
+  fx:                         390.598938
+  fy:                         390.598938
+  cx:                         320.581665
+  cy:                         237.712845
+  near_plane:                 0.4
+  far_plane:                  6.0
+  T_BS:                       [1.0, 0.0, 0.0, -0.0302200001,
+                              0.0, 1.0, 0.0,  0.0074000000,
+                              0.0, 0.0, 1.0,  0.0160200000,
+                              0.0, 0.0, 0.0, 1.0000000000]
+
+
+  # Introduce new notation to be consistent with OKVIS, needed here: depth sensor [camera or lidar frame, D ] w.r.t. IMU [S in OKVIS]
+  T_SD:                       []

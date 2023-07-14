@@ -1,0 +1,55 @@
+%YAML:1.2
+# SPDX-FileCopyrightText: 2021 Smart Robotics Lab, Imperial College London, Technical University of Munich
+# SPDX-License-Identifier: CC0-1.0
+
+general:
+  sensor_type:                "leica" # depth [not yet supported] | ouster [not yet supported] | leica
+  results_directory:          "/srv/Users/Boche/Documents/Datasets/HILTI/exp04_construction_upper_level/results/"
+  integration_type:           "ray"  # ray | rangeImage; option not yet supported
+  submap_time_threshold:      5.0  # taken from Tommaso
+
+map:
+  dim:                        [30., 30., 30.] # [15., 15., 15.] # [100., 140., 50.]
+  res:                        0.05
+  free_space_res:             0.1 # free space resolution
+
+data:
+  # tsdf
+  truncation_boundary_factor: 8
+  max_weight:                 100
+
+  # occupancy
+  surface_boundary:           0
+  min_occupancy:              -100
+  max_occupancy:               100
+  log_odd_min:                -5.015
+  log_odd_max:                 5.015
+  fs_integr_scale:            1
+  const_surface_thickness:    false
+  uncertainty_model:          linear
+  tau_min_factor:             3
+  tau_max_factor:             12
+  k_tau:                      0.05
+  sigma_min_factor:           1         # minimum/maximum uncertainty := 3 x sigma_min_factor/sigma_max_factor * voxel_dim
+  sigma_max_factor:           3         # minimum/maximum uncertainty := 3 x sigma_min_factor/sigma_max_factor * voxel_dim
+  k_sigma:                    0.05
+
+  # lidar ray integration
+  k_scale:                    6e-03
+
+sensor:
+  width:                      360
+  height:                     180
+  elevation_angles:           []
+  azimuth_angles:             []
+  near_plane:                 0.8
+  far_plane:                  30.0
+  # Introduce new notation to be consistent with OKVIS, needed here: depth sensor [camera or lidar frame, D ] w.r.t. IMU [S in OKVIS]
+  T_SD:                       []
+  # T_BS: needs sensor (S=LiDAR) - to - Body (B=IMU) for coupling with OKVIS
+  T_BS:                       [ 0.0, -1.0, 0., -0.0007,
+                               -1.0, 0.0, 0.0, -0.0086,
+                                0.0, 0.0, -1.0, 0.0550,
+                                0.0, 0.0, 0.0, 1.0] # Body (=IMU) - to - sensor (=LiDAR) for integration into OKVIS
+  elevation_resolution_angle: 1.0 # only used for ray-based integration [degree]
+  azimuth_resolution_angle:   0.18 # only used for ray-based integration [degree]

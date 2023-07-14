@@ -1,0 +1,45 @@
+%YAML:1.2
+# SPDX-FileCopyrightText: 2021 Smart Robotics Lab, Imperial College London, Technical University of Munich
+# SPDX-License-Identifier: CC0-1.0
+
+general:
+  sensor_type:                "leica" # depth [not yet supported] | ouster [not yet supported] | leica
+  #results_directory:          "/srv/Users/Boche/Documents/Datasets/HILTI/exp04_construction_upper_level/results/"
+  #results_directory:          "/srv/Users/Boche/Documents/Datasets/HILTI/exp18_corridor_lower_gallery_2/results/"
+  integration_type:           "ray"  # ray | rangeImage; option not yet supported
+  submap_state_buffer:        1
+  submap_kf_threshold:        10
+  sensor_measurement_downsampling: 1
+  depth_image_resolution_downsampling: 2
+map:
+  dim:                        [25.6, 25.6, 25.6]
+  res:                        0.03
+  free_space_res:             0.06 # free space resolution
+
+data:
+  # occupancy
+  surface_boundary:           0
+  min_occupancy:              -100
+  max_occupancy:               100
+  log_odd_min:                -5.015
+  log_odd_max:                 5.015
+  fs_integr_scale:            1
+  const_surface_thickness:    false
+  uncertainty_model:          linear
+  tau_min_factor:             3
+  tau_max_factor:             12
+  k_tau:                      0.05
+  sigma_min_factor:           1         # minimum/maximum uncertainty := 3 x sigma_min_factor/sigma_max_factor * voxel_dim
+  sigma_max_factor:           3         # minimum/maximum uncertainty := 3 x sigma_min_factor/sigma_max_factor * voxel_dim
+  k_sigma:                    0.05
+
+sensor:
+  near_plane:                 0.8
+  far_plane:                  30.0
+  # will be renamed to T_SD in the future
+  T_BS:                       [ -0.014091499887545,   0.008501924017699,  -0.999864564288042,  -0.072062709575021,
+                                 0.953699964923615,  -0.300334060982230,  -0.015994646561215,   0.000957421159839,
+                                -0.300429370294609,  -0.953796188450090,  -0.003876127250906,   0.038442904697005,
+                                 0.0,                 0.0,                 0.0,                 1.0]
+  elevation_resolution_angle: 0.086 # only used for ray-based integration [degree]
+  azimuth_resolution_angle:   0.002 # only used for ray-based integration [degree]

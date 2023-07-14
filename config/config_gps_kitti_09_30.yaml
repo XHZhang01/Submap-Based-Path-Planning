@@ -1,0 +1,98 @@
+%YAML:1.0
+cameras:
+     - {T_SC:
+        [0.008751159545003, -0.004796090934751,  0.999950267938884,  1.102243123079595,
+         -0.999864282463051, -0.014002494994809,  0.008683247241949, -0.319071944043778,
+          0.013960147788777, -0.999890439948799, -0.004917978358953,  0.746065879339096,
+          0.0              ,  0.0              ,  0.0              ,  1.000000000000000],
+        image_dimension: [1241, 376],
+        distortion_coefficients: [0.0 , 0.0 , 0.0 , 0.0],
+        distortion_type: equidistant,
+        focal_length: [7.188560000000e+02, 7.188560000000e+02],
+        principal_point: [6.071928000000e+02, 1.852157000000e+02]}
+
+     - {T_SC:
+        [0.008751159545003, -0.004796090934751,  0.999950267938884,  1.106968749233896,
+         -0.999864282463051, -0.014002494994809,  0.008683247241949, -0.858998656573825,
+          0.013960147788777, -0.999890439948799, -0.004917978358953,  0.753604359145036,
+          0.0              ,  0.0              ,  0.0              ,  1.000000000000000],
+        image_dimension: [1241, 376],
+        distortion_coefficients: [0.0 , 0.0 , 0.0 , 0.0],
+        distortion_type: equidistant,
+        focal_length: [7.188560000000e+02, 7.188560000000e+02],
+        principal_point: [6.071928000000e+02, 1.852157000000e+02]}
+
+
+# additional camera parameters
+camera_parameters:
+    timestamp_tolerance: 0.005 # [s] stereo frame out-of-sync tolerance
+    image_delay: 0.00 # [s] timestamp_camera_correct = timestamp_camera - image_delay
+    online_calibration: # some parameters to set the online 
+        do_extrinsics: false # Do we online-calibrate extrinsics?
+        sigma_r: 0.01 # T_SCi position prior stdev [m]
+        sigma_alpha: 0.05 # T_SCi orientation prior stdev [rad]
+
+imu_parameters:
+    use: true
+    a_max: 176.0 # acceleration saturation [m/s^2]
+    g_max: 7.8 # gyro saturation [rad/s]
+    sigma_g_c: 0.01 # gyro noise density [rad/s/sqrt(Hz)]
+    sigma_a_c: 0.05 # accelerometer noise density [m/s^2/sqrt(Hz)]
+    sigma_bg: 0.01 # gyro bias prior [rad/s]
+    sigma_ba: 0.01 # accelerometer bias prior [m/s^2]
+    sigma_gw_c: 1.0e-06 # 4.0e-6 # gyro drift noise density [rad/s^s/sqrt(Hz)]
+    sigma_aw_c: 1.0e-04 # 4.0e-5 # accelerometer drift noise density [m/s^2/sqrt(Hz)]
+    g: 9.81007 # Earth's acceleration due to gravity [m/s^2]
+    g0: [ 0.0, 0.0, 0.0 ] # initial gyro bias [rad/s]
+    a0: [ -0.02, 0.12, 0.06 ] #[ -0.05, 0.09, 0.01 ] # initial accelerometer bias [m/s^2]
+    #g0: [ -0.00183371, 0.0257634, 0.0787383] # initial gyro bias [rad/s]
+    #a0: [ 0.00437839, 0.13191, 0.101086] # initial accelerometer bias [m/s^2]
+    # tranform Body-Sensor (IMU)
+    T_BS:
+        [1.0000, 0.0000, 0.0000, 0.0000,
+         0.0000, 1.0000, 0.0000, 0.0000,
+         0.0000, 0.0000, 1.0000, 0.0000,
+         0.0000, 0.0000, 0.0000, 1.0000]
+
+# frontend: detection etc. 
+frontend_parameters:
+    detection_threshold: 20.0 #42.0 # detection threshold. By default the uniformity radius in pixels
+    absolute_threshold: 50.0 # absolute Harris corner threshold (noise floor)
+    matching_threshold: 70.0 # BRISK descriptor matching threshold
+    octaves: 0 # number of octaves for detection. 0 means single-scale at highest resolution
+    max_num_keypoints: 800 # restrict to a maximum of this many keypoints per image (strongest ones)
+    keyframe_overlap: 0.65 # minimum field-of-view overlap
+    use_cnn: true # use the CNN (if available) to filter out dynamic content / sky
+    parallelise_detection: true
+
+# estimator parameters
+estimator_parameters:
+    num_keyframes: 10 # number of keyframes in optimisation window
+    num_loop_closure_frames: 5 # number of loop closure frames in optimisation window
+    num_imu_frames: 3 # number of frames linked by most recent nonlinear IMU error terms
+    do_loop_closures: false # whether to do VI-SLAM or VIO
+    do_final_ba: false # Whether to run a full final BA
+    enforce_realtime: false # whether to limit the time budget for optimisation 
+    realtime_min_iterations: 3 # minimum number of iterations always performed
+    realtime_max_iterations: 15 # never do more than these, even if not converged
+    realtime_time_limit: 0.035 # time budget for realtime optimisation [s]
+    realtime_num_threads: 4 # number of threads for the realtime optimisation
+    full_graph_iterations: 50 # don't do more than these for the full (background) optimisation
+    full_graph_num_threads: 1 # number of threads for the full (background) optimisation
+
+# some options for how and what to output
+output_parameters:
+    display_matches: false  # displays debug video and matches. May be slow.
+    display_overhead: false # debug overhead image. Is slow.
+    publish_imu_propagated_state: false # Should the state that is propagated with IMU messages be published or just the optimised ones?
+    
+# some options for gps mode
+gps_parameters:
+    use_gps: true # is gps available
+    observability_threshold: 10.0 # threshold when GPS extrinsics are assumed to become observable
+    variance_threshold: 50.0 # threshold for the max() operation on the chi square error
+    r_SA: [ 0.0 , 0.0 , 0.0 ] # antenna position relative to (IMU) sensor frame 
+    yaw_error_threshold: 1.0 # threshold for initialization (in degrees)
+    gps_fusion_mode: 4 # 1: do svd initialization only once | 2: do SVD initialisation in every step | 3: do position alignment only | 4: do position + full alignment
+
+

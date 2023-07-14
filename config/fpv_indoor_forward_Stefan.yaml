@@ -1,0 +1,83 @@
+%YAML:1.0
+cameras:
+     - {T_SC:
+        [ -0.0282864, 0.0114934, 0.999534, 0.00200439,
+          -0.999597, -0.00273629, -0.0282567, 0.0205357,
+           0.00241025, -0.99993, 0.0115661, -6.05292e-05,
+                   0.0,       0.0,       0.0,       1.0 ],
+        image_dimension: [640, 480],
+        distortion_coefficients: [-0.017283, 0.030178, -0.023026, 0.006517],
+        distortion_type: equidistant,
+        focal_length: [276.576833, 276.300827],
+        principal_point: [319.997353, 241.683900]}
+
+     - {T_SC:
+        [ -0.016752, 0.0094423, 0.999815, -0.00134132,
+          -0.999832, 0.00725701, -0.0168208, -0.0568905,
+          -0.00741449, -0.999929, 0.00931915, -0.000210403,
+           0.0,       0.0,       0.0,       1.0 ],
+        image_dimension: [640, 480],
+        distortion_coefficients: [-0.012925, 0.016666, -0.011664, 0.003368],
+        distortion_type: equidistant,
+        focal_length: [275.974502, 275.675503],
+        principal_point: [315.181839, 235.503377]}
+
+
+# additional camera parameters
+camera_parameters:
+    timestamp_tolerance: 0.005 # [s] stereo frame out-of-sync tolerance
+    image_delay: 0.0165914312471 # [s] timestamp_camera_correct = timestamp_camera - image_delay
+    online_calibration: # some parameters to set the online 
+        do_extrinsics: true # Do we online-calibrate extrinsics?
+        sigma_r: 0.001 # T_SCi position prior stdev [m] 
+        sigma_alpha: 0.02 # T_SCi orientation prior stdev [rad]
+
+imu_parameters:
+    use: true
+    a_max: 150.0 # acceleration saturation [m/s^2]
+    g_max: 15.0 # gyro saturation [rad/s]
+    sigma_g_c: 0.01 # 0.01 gyro noise density [rad/s/sqrt(Hz)]
+    sigma_a_c: 0.1 # 0.2 accelerometer noise density [m/s^2/sqrt(Hz)]
+    sigma_bg: 0.01 # gyro bias prior [rad/s]
+    sigma_ba: 0.02 # 0.01 accelerometer bias prior [m/s^2]
+    sigma_gw_c: 0.00004 # 4.0e-6 # gyro drift noise density [rad/s^s/sqrt(Hz)]
+    sigma_aw_c: 0.002 # 4.0e-5 # accelerometer drift noise density [m/s^2/sqrt(Hz)]
+    g: 9.81007 # Earth's acceleration due to gravity [m/s^2]
+    g0: [ -0.00504516, -0.00324548, -0.00503929 ] # initial gyro bias [rad/s]
+    a0: [ 0.0398853, -0.0545535, 0.0980976] # initial accelerometer bias [m/s^2]
+    # tranform Body-Sensor (IMU)
+    T_BS:
+        [1.0000, 0.0000, 0.0000, 0.0000,
+         0.0000, 1.0000, 0.0000, 0.0000,
+         0.0000, 0.0000, 1.0000, 0.0000,
+         0.0000, 0.0000, 0.0000, 1.0000]
+
+# frontend: detection etc. 
+frontend_parameters:
+    detection_threshold: 30.0 # detection threshold. By default the uniformity radius in pixels
+    absolute_threshold: 200.0 # absolute Harris corner threshold (noise floor)
+    octaves: 0 # number of octaves for detection. 0 means single-scale at highest resolution
+    max_num_keypoints: 400 # restrict to a maximum of this many keypoints per image (strongest ones)
+    keyframe_overlap: 0.55 # minimum field-of-view overlap
+
+# estimator parameters
+estimator_parameters:
+    num_keyframes: 5 # number of keyframes in optimisation window
+    num_loop_closure_frames: 5 # number of loop closure frames in optimisation window
+    num_imu_frames: 3 # number of frames linked by most recent nonlinear IMU error terms
+    do_loop_closures: true # whether to do VI-SLAM or VIO
+    do_final_ba: true # Whether to run a full final BA
+    enforce_realtime: false # whether to limit the time budget for optimisation 
+    realtime_min_iterations: 3 # minimum number of iterations always performed
+    realtime_max_iterations: 10 # never do more than these, even if not converged
+    realtime_time_limit: 0.035 # time budget for realtime optimisation [s]
+    realtime_num_threads: 3 # number of threads for the realtime optimisation
+    full_graph_iterations: 15 # don't do more than these for the full (background) optimisation
+    full_graph_num_threads: 1 # number of threads for the full (background) optimisation
+
+# some options for how and what to output
+output_parameters:
+    display_matches: true  # displays debug video and matches. May be slow.
+    display_overhead: false # debug overhead image. Is slow.
+    publish_imu_propagated_state: false # Should the state that is propagated with IMU messages be published or just the optimised ones?
+

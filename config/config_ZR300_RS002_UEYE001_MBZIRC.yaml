@@ -1,0 +1,149 @@
+%YAML:1.0
+cameras:
+     - {T_SC: #realsense ZR300 RGB camera, RS002, MBZIRC
+        [ 0.999938940960688, 0.0100795792920396,  -0.00447757072027700,  0.0948993787689044,
+         -0.0101677172354120, 0.999746371082372,   -0.0200961833264250, 2.54819052130000e-05,
+          0.00427387409190000, 0.0201405566587120,  0.999788289548293,   0.00266839519540800,
+          0.0,   0.0,   0.0,   1.0],
+        image_dimension: [640, 480],
+        distortion_coefficients: [0.11793542353209531, -0.282670874083937, 0.0037277127774086654, -0.0013393122395608723],
+        distortion_type: radialtangential,
+        focal_length: [612.234652300803, 612.9148995080368],
+        principal_point: [317.88802413335253, 239.54273996525234],
+        depth_baseline: 0.1 # [m]
+        # timeshift_cam_imu: 29230372 # [ns] time shift from camera to imu, t_imu = t_cam + shift
+        }
+
+     # - {T_SC: #realsense ZR300 RGB camera, RS000
+     #    [ 0.999940962719946,  -0.0106864831765460, -0.00180665763943280,    0.0948882281548758,
+     #      0.0106536729355560,  0.999794006971712,   -0.0172947280365061, 0.00326713485951920,
+     #      0.00199109597924400, 0.0172744525152450,  0.999849522386899,   0.00258706898926720,
+     #      0.0,   0.0,   0.0,   1.0],
+     #    image_dimension: [640, 480],
+     #    distortion_coefficients: [0.1163357217252265, -0.25504629690170094, 0.0006310863330408271, 0.0015763243604386354],
+     #    distortion_type: radialtangential,
+     #    focal_length: [606.0509716312624, 609.2072669938981],
+     #    principal_point: [327.88802413335253, 239.04273996525234],
+     #    okvis_use: true,
+     #    tracker_use: false,
+     #    depth_baseline: 0.1 # [m]
+     #    }
+
+     # - {T_SC: #realsense ZR300 fisheye camera
+     #    [ 0.999995, 0.00114142, 0.00296855, 0.0068474, 
+     #     -0.00111887, 0.999971, -0.00758544, 0.00229775, 
+     #     -0.00297713, 0.00758208, 0.999967, 2.96394e-06, 
+     #      0.0, 0.0, 0.0, 1.0],
+     #    image_dimension: [640, 480],
+     #    distortion_coefficients: [-0.1888787864966167, 0.023097926685091915, 0.00027788963504358317, -0.0004506334457213078],
+     #    distortion_type: radialtangential,
+     #    focal_length: [260.49792014912197, 260.19919866231004],
+     #    principal_point: [324.8593366295983, 238.60789101926744]}
+     
+     - {T_SC: # additional camera UEYE000 (originally used in 2nd report)
+        [ -0.999993160000000, -0.000674209582078, -0.003637693213155,  0.052229130994271,
+           0.003653400000000, -0.334929324884603, -0.942236167811044, -0.051622437942016,
+          -0.000583110000000, -0.942243008897685,  0.334929503023804, -0.048066838671399,
+           0.000000000000000,  0.000000000000000,  0.000000000000000,  1.000000000000000],
+        image_dimension: [752, 480],
+        distortion_coefficients: [-0.27898968868353413, 0.05956568950593104, -0.00017136148794693525, -0.0007357763419349046],
+        distortion_type: radialtangential,
+        focal_length: [365.1080387187977, 364.99944905705325],
+        principal_point: [370.6439158071132, 238.59584318795098],
+        okvis_use: false,
+        tracker_use: true
+        }
+
+     # - {T_SC: # additional camera UEYE001 (new replacement EO-0413BL)
+     #    [ -0.999993160000000, -0.000674209582078, -0.003637693213155,  0.052229130994271,
+     #       0.003653400000000, -0.334929324884603, -0.942236167811044, -0.051622437942016,
+     #      -0.000583110000000, -0.942243008897685,  0.334929503023804, -0.048066838671399,
+     #       0.000000000000000,  0.000000000000000,  0.000000000000000,  1.000000000000000],
+     #    image_dimension: [752, 480],
+     #    distortion_coefficients: [-0.3338812488277567, 0.09120967766663249, 0.0002969763496676584, -0.0021802303305543604],
+     #    distortion_type: radialtangential,
+     #    focal_length: [376.5050338691555, 378.0984165597563],
+     #    principal_point: [396.42439168325, 235.97886322696831],
+     #    okvis_use: false,
+     #    tracker_use: true
+     #    }
+
+target_size_metres: 0.106
+
+camera_params:
+    camera_rate: 30 # just to manage the expectations of when there should be frames arriving
+    sigma_absolute_translation: 0.0 # The standard deviation of the camera extrinsics translation, e.g. 1.0e-10 for online-calib [m].
+    sigma_absolute_orientation: 0.0 # The standard deviation of the camera extrinsics orientation, e.g. 1.0e-3 for online-calib [rad].
+    sigma_c_relative_translation: 0.0 # The std. dev. of the cam. extr. transl. change between frames, e.g. 1.0e-6 for adaptive online calib (not less for numerics) [m].
+    sigma_c_relative_orientation: 0.0 # The std. dev. of the cam. extr. orient. change between frames, e.g. 1.0e-6 for adaptive online calib (not less for numerics) [rad].
+    timestamp_tolerance: 0.005 # [s] stereo frame out-of-sync tolerance
+    timeshift_cam_imu: 26856921 # [ns] time shift from camera to imu, t_imu = t_cam + shift
+
+imu_params:
+    a_max: 176.0 # acceleration saturation [m/s^2]
+    g_max: 7.8 # gyro saturation [rad/s]
+
+    sigma_g_c: 3.0e-03 # gyro noise density [rad/s/sqrt(Hz)]
+    sigma_a_c: 6.0e-03 # accelerometer noise density [m/s^2/sqrt(Hz)]
+    sigma_bg: 1.0e-01 # gyro bias prior [rad/s]
+    sigma_ba: 1.0e-01 # accelerometer bias prior [m/s^2]
+
+    # sigma_g_c: 1.5369e-04 # gyro noise density [rad/s/sqrt(Hz)]
+    # sigma_a_c: 9.7939e-04 # accelerometer noise density [m/s^2/sqrt(Hz)]
+    # sigma_bg: 5.0e-07 # gyro bias prior [rad/s]
+    # sigma_ba: 1.0e-04 # accelerometer bias prior [m/s^2]
+
+    sigma_gw_c: 8.0e-6 # gyro drift noise density [rad/s^s/sqrt(Hz)]
+    sigma_aw_c: 8.0e-5 # accelerometer drift noise density [m/s^2/sqrt(Hz)]
+    tau: 3600.0 # reversion time constant, currently not in use [s]
+    g: 9.81007 # Earth's acceleration due to gravity [m/s^2]
+    a0: [ 0.0000, 0.0000, 0.0000 ] # Accelerometer bias [m/s^2]
+    imu_rate: 200
+    # tranform Body-Sensor (IMU)
+    T_BS: [-0.001144, 0.289826, 0.957078, 0.095547,
+      0.999939, -0.010168, 0.004274, -0.064905,
+      0.010970, 0.957025, -0.289797, -0.090292,
+      0.0, 0.0, 0.0, 1.0]
+
+# Estimator parameters
+numKeyframes: 5 # number of keyframes in optimisation window
+numImuFrames: 3 # number of frames linked by most recent nonlinear IMU error terms
+
+# ceres optimization options
+ceres_options:
+    minIterations: 3   # minimum number of iterations always performed
+    maxIterations: 10  # never do more than these, even if not converged
+    timeLimit: 0.035   # [s] negative values will set the an unlimited time limit
+
+# detection
+detection_options:
+    threshold: 33.0      # detection threshold. By default the uniformity radius in pixels
+    octaves: 0           # number of octaves for detection. 0 means single-scale at highest resolution
+    maxNoKeypoints: 400  # restrict to a maximum of this many keypoints per image (strongest ones)
+
+# delay of images [s]:
+imageDelay: 0.0  # in case you are using a custom setup, you will have to calibrate this. 0 for the VISensor.
+
+# display debug images?
+displayImages: true  # displays debug video and keyframe matches. May be slow.
+
+# use direct driver
+useDriver: true 
+
+# some options for how and what to publish -- optional in ROS-free version
+publishing_options:
+    publish_rate: 200                  # rate at which odometry updates are published only works properly if imu_rate/publish_rate is an integer!!
+    publishLandmarks: true             # select, if you want to publish landmarks at all
+    landmarkQualityThreshold: 1.0e-2   # landmark with lower quality will not be published
+    maximumLandmarkQuality: 0.05       # landmark with higher quality will be published with the maximum colour intensity
+    maxPathLength: 20                  # maximum length of the published path
+    publishImuPropagatedState: true    # Should the state that is propagated with IMU messages be published? Or just the optimized ones?
+    # provide custom World frame Wc
+    T_Wc_W:
+        [0.0000,-1.0000, 0.0000, 0.0000,
+         1.0000, 0.0000, 0.0000, 0.0000,
+         0.0000, 0.0000, 1.0000, 0.0000,
+         0.0000, 0.0000, 0.0000, 1.0000]
+    trackedBodyFrame: B                # B or S, the frame of reference that will be expressed relative to the selected worldFrame
+    velocitiesFrame: Wc                # Wc, B or S,  the frames in which the velocities of the selected trackedBodyFrame will be expressed in
+

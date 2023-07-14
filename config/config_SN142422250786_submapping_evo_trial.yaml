@@ -1,0 +1,61 @@
+%YAML:1.2
+# SPDX-FileCopyrightText: 2021 Smart Robotics Lab, Imperial College London, Technical University of Munich
+# SPDX-License-Identifier: CC0-1.0
+
+general:
+  sensor_type:                "leica" # depth [not yet supported] | ouster [not yet supported] | leica
+  #results_directory:          "/srv/Users/Boche/Documents/Datasets/Leica/20220209_kemptthal_flight03/results/test"
+  results_directory:          "/srv/submapping_data/results/meshes"
+  integration_type:           "ray"  # ray | rangeImage; option not yet supported
+  submap_time_threshold:      15.0  # taken from Tommaso
+  submap_state_buffer:        10 #Buffer, if in 10 states we have notcreated a submap we start integrating it into supereight
+  submap_kf_threshold:        5
+
+
+map:
+  dim:                        [30., 30., 30.] # [15., 15., 15.] # [100., 140., 50.]
+  res:                        0.1
+  free_space_res:             0.06 # free space resolution
+
+data:
+  # tsdf
+  truncation_boundary_factor: 8
+  max_weight:                 100
+
+  # occupancy
+  surface_boundary:           0
+  min_occupancy:              -100
+  max_occupancy:               100
+  log_odd_min:                -5.015
+  log_odd_max:                 5.015
+  fs_integr_scale:            1
+  const_surface_thickness:    false
+  uncertainty_model:          linear
+  tau_min_factor:             3
+  tau_max_factor:             12
+  k_tau:                      0.05
+  sigma_min_factor:           1         # minimum/maximum uncertainty := 3 x sigma_min_factor/sigma_max_factor * voxel_dim
+  sigma_max_factor:           3         # minimum/maximum uncertainty := 3 x sigma_min_factor/sigma_max_factor * voxel_dim
+  k_sigma:                    0.05
+
+  # lidar ray integration
+  k_scale:                    6e-03
+
+sensor:
+  width:                      360
+  height:                     180
+  elevation_angles:           []
+  azimuth_angles:             []
+  near_plane:                 0.8
+  far_plane:                  30.0
+  # Introduce new notation to be consistent with OKVIS, needed here: depth sensor [camera or lidar frame, D ] w.r.t. IMU [S in OKVIS]
+  T_SD:                       []
+  #T_BS:                       [0.004088675978291, 0.003617778170131, 0.999985097093880, 0.154175877654483, -0.788916081238428, -0.614476792035727, 0.005448744156649, -0.000462884781525, 0.614487346893446, -0.788926602245478, 0.000341726877956, -0.028905072502590, 0.0000, 0.0000, 0.0000, 1.0000] # Body - to - sensor (LiDAR) for only mapping
+  T_BS:                       [0.0081, -0.0083, -0.9999, -0.0729, -0.7830, -0.6221, -0.0012, 0.0011, -0.6220, 0.7829, -0.0115, 0.0351, 0., 0., 0., 1.] # Body (=IMU) - to - sensor (=LiDAR) for integration into OKVIS
+  #T_BS:                       [-0.002743670442922, 0.033882171813216, -0.999422068350365, -0.071040687907283, 0.406537340771986, -0.913071112330848, -0.032070771505380, -0.000203108523633, -0.913630047026992, -0.406390381603856, -0.011269201805336, 0.031507965196080, 0.0000, 0.0000, 0.0000, 1.0000]  # outdoor flight03 IMU [B] <-> Lidar [S]
+  #T_BS:                       [-0.008158811116711,  -0.029139264719037,  -0.999542063673559,  -0.071908144960453,
+  #                              0.026581993780993,   0.999215776036193,  -0.029346729409180,  -0.002367340978787,
+  #                              0.999613340951285,  -0.026809255342554,  -0.007377833027973,   0.032844126653258,
+  #                              0.               ,   0.               ,   0.               ,   1.000000000000000]  # TUM offices dataset, BLK2Fly Beauty, Lidar {S} to IMU {Body}
+  elevation_resolution_angle: 0.086 # only used for ray-based integration [degree]
+  azimuth_resolution_angle:   0.002 # only used for ray-based integration [degree]
